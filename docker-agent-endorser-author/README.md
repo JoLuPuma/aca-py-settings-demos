@@ -30,18 +30,18 @@ First start the endorser. The endorser agent generates by default an invitation.
  8. And that's all . Now we can test the set up. If there is no error in both agents we can try publishing the following schema  to the ledger :
  Call the ```POST /anoncreds/schema``` with this body object:
 
-
 ```json
     {
        "schema": {
         "attrNames": [
           "name","last_name"
         ],
-        "issuerId": "W9o4XdJtB6RKqMyHGvcQn5",
+        "issuerId": "put-your-did-here",
         "name": "IdentityTest",
         "version": "1.0"
       }
     }
-    ```
+```
+
 ## 2. Starting an Author agent with manual endorsement 
 TODO
