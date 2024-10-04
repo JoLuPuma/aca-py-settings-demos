@@ -59,7 +59,7 @@ admin-insecure-mode: true
 
 
 # Revocation
-tails-server-base-url: https://tails-test.vonx.io
+tails-server-base-url: put-your-tails-file-server-here
 
 # Logging settings
 #log-level: info
