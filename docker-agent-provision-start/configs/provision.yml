@@ -1,6 +1,0 @@
-
-
-# Wallet
-seed: put-your-seed-here
-wallet-key: change-me-key
-wallet-storage-creds: '{"account":"postgres", "password":"development", "admin_account":"postgres", "admin_password":"development"}'
