@@ -18,7 +18,7 @@ services:
     environment:
       POSTGRES_PASSWORD: ${POSTGRESQL_ADMIN_PASSWORD:-development}
     ports: # Uncomment to access postgres outside of containers
-      - "5435:5432"
+    #  - "5435:5432"
     networks:
       - acapy_default
     volumes:
@@ -29,7 +29,7 @@ services:
       timeout: 3s
       retries: 5
   #*************************************************************
-  # acapy-redis_queue: aca-py that produces redis events. *
+  # acapy-agent*
   #*************************************************************
   acapy-agent:
     image: acapy-agent
