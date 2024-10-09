@@ -29,7 +29,7 @@ services:
       timeout: 3s
       retries: 5
   #*************************************************************
-  # acapy-redis_queue: aca-py that produces redis events. *
+  # acapy-agent-mediator. *
   #*************************************************************
   acapy-agent-mediator:
     image: acapy-agent-mediator
