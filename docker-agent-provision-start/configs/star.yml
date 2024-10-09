@@ -1,0 +1,7 @@
+
+# Wallet
+wallet-key: change-me-key
+wallet-storage-creds: '{"account":"postgres", "password":"development", "admin_account":"postgres", "admin_password":"development"}'
+
+# Admin-Swagger
+admin-api-key: change-me-api-key
