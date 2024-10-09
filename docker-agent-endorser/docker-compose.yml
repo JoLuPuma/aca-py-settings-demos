@@ -19,7 +19,7 @@ services:
       timeout: 3s
       retries: 5
   #*************************************************************
-  # acapy-redis_queue: aca-py that produces redis events. *
+  # acapy-agent-endorser
   #*************************************************************
   acapy-agent-endorser:
     image: acapy-agent-endorser
@@ -44,7 +44,7 @@ services:
         "-c",
         "sleep 5; \ 
          aca-py start \
-         --arg-file './configs/endorser.yml'"
+         --arg-file './configs/endorser.yaml'"
       ]
     
     networks:
