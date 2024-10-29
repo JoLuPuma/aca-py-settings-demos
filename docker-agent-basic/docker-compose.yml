@@ -8,7 +8,7 @@ services:
       - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
     ports:
       - 4040:4040 
-    command: http acapy-agent:3005 --log stdout
+    command: http acapy-agent-basic:3005 --log stdout
     networks:
       - acapy_default
   
@@ -17,7 +17,7 @@ services:
     # restart: always
     environment:
       POSTGRES_PASSWORD: ${POSTGRESQL_ADMIN_PASSWORD:-development}
-    ports: # Uncomment to access postgres outside of containers
+    #ports: # Uncomment to access postgres outside of containers
     #  - "5435:5432"
     networks:
       - acapy_default
@@ -31,8 +31,8 @@ services:
   #*************************************************************
   # acapy-agent*
   #*************************************************************
-  acapy-agent:
-    image: acapy-agent
+  acapy-agent-basic:
+    image: acapy-agent-basic
     build:
       context: .
       dockerfile: Dockerfile
@@ -42,7 +42,7 @@ services:
       - POSTGRESQL_PORT=${POSTGRESQL_PORT:-5432}
       - ACAPY_WALLET_STORAGE_CONFIG={"url":"${POSTGRESQL_HOST:-db}:${POSTGRESQL_PORT:-5432}","wallet_scheme":"DatabasePerWallet"}
       - ACAPY_WALLET_STORAGE_CREDS={"account":"${POSTGRESQL_USER:-postgres}","password":"${POSTGRESQL_PASSWORD:-development}","admin_account":"${POSTGRESQL_ADMIN_USER:-postgres}","admin_password":"${POSTGRESQL_ADMIN_PASSWORD:-development}"}
-      - AGENT_ARG_FILE=${AGENT_ARG_FILE:-./configs/default.yml}
+      - AGENT_ARG_FILE=${AGENT_ARG_FILE:-./configs/default.yaml}
       - LOG_LEVEL=${LOG_LEVEL:-INFO}
     ports:
       - "3005:3005"
