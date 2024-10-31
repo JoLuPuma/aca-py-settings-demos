@@ -155,8 +155,10 @@ Make sure the following parameters are set correctly.
 3.  Set the config file ```author-manual.yml``` in the ```docker-compose-author.yml``` file like this ```--arg-file './configs/author-manual.yml'```
 4.  Start the Author agent ```docker compose -f docker-compose-author.yml up``` 
 5.  Author agent is running
-6.  Accepts the invitation (with auto_accept = true and alias=The_same_as_endorser-alias_parameter) created by Endorser
+6.  Accepts the invitation (with auto_accept = true) created by Endorser<br>
 `POST /out-of-band/receive-invitation`<br>
+
+    > You don't have to specify the `alias` for this connection
 
 7.  `POST /transactions/{conn_id}/set-endorser-role`<br>
     Parameters:<br>
@@ -165,8 +167,8 @@ Make sure the following parameters are set correctly.
 
 8.  `POST /transactions/{conn_id}/set-endorser-info`<br>
     Parameters:<br>
-      - conn_id= Id de la connection avec endorser
-      - endorser_did = The_same_as_endorser-public-did_parameter
+      - conn_id= connection_id  between Author and Endorser
+      - endorser_did = the_endorser-public-did
 
 > Do not forget to do step 9: ***Setting endorser rôle for the connexion between Endorser and Author***
 
