@@ -44,6 +44,7 @@ First start the endorser. The endorser agent generates by default an invitation.
       }
     }
 ```
+
 ## 2. Starting an Author agent with semi-automatic endorsement (and post-deployment settings)
 We're going to start the Author agent with no invitation previously created by the Endorser Agent. 
 With this setting the Author agent would be able to find by-itself the endorser's connection id, so you dont have to specify the variable `endorser_connection_id` while creating the payload of the transaction.
@@ -74,21 +75,33 @@ Make sure the following parameters are set correctly (***Replace the endorser-pu
 6.  Author agent is running
 
 ### Endorser part 2
-7.  create an invitation (with auto_accept = true)
-`POST /out-of-band/create-invitation`
+7.  Create an invitation (with auto_accept = true)
+    `POST /out-of-band/create-invitation`<br>
+    Parameters:<br>
+          - auto_accept= true
+
+    Example de payload :
+    ```json
+    {
+      "handshake_protocols": [
+        "https://didcomm.org/didexchange/1.0"
+      ],
+      "use_did_method": "did:peer:4"
+    }
+    ```
 
 ### Author part 2
 8.   Accepts the invitation (with auto_accept = true and alias=The_same_as_endorser-alias_parameter) created by Endorser
 `POST /out-of-band/receive-invitation`
 
-9.  `POST /transactions/{conn_id}/set-endorser-role` 
-    Parameters:
-      - conn_id= Id de la connection avec endorser
+9.  `POST /transactions/{conn_id}/set-endorser-role`<br> 
+    Parameters:<br>
+      - conn_id= connection_id between Author and Endorser
       - transaction_my_job = TRANSACTION_AUTHOR 
 
-10.  `POST /transactions/{conn_id}/set-endorser-info`
-    Parameters:
-      - conn_id= Id de la connection avec endorser
+10.  `POST /transactions/{conn_id}/set-endorser-info`<br>
+    Parameters:<br>
+      - conn_id= connection_id between Author and Endorser
       - endorser_did = The_same_as_endorser-public-did_parameter
     
 
@@ -108,4 +121,75 @@ Make sure the following parameters are set correctly (***Replace the endorser-pu
     }
 ```
 
+## 3. Starting an Author agent with manual endorsement (and post-deployment settings)
 
+### Endorser part
+1.  Endorser agent start up remains the same ( as in the 2 first endorsement process)<br>
+  We are going to use the same `endorser-auto.yml`.
+  -  Set the config file ```endorser-auto.yml``` in the ```docker-compose.yml``` file like this ```--arg-file './configs/endorser-auto.yml'```
+  -  Start the endorser with ```docker compose up ```
+  -  Endorser agent is running
+2.  Create an invitation (with auto_accept = true)
+`POST /out-of-band/create-invitation`<br>
+Parameters:<br>
+      - auto_accept= true
+> The next step must be done after a DIDComm channel has been established between the Endorser and Author (that is, the Author has been accepted the invitation)
+9. Setting endorser rôle for the connexion between Endorser and Author
+`POST /transactions/{conn_id}/set-endorser-role`<br> 
+    Parameters:<br>
+      - conn_id= connection_id between Endorser and Author
+      - transaction_my_job = TRANSACTION_ENDORSER 
+
+### Author part
+Since there is no automation in this process, the configuration file of this agent does not contain the corresponding parameters.
+
+Make sure the following parameters are set correctly.
+    
+  ``` yml 
+    auto-request-endorsement: true
+    auto-write-transactions: true
+    auto-create-revocation-transactions: true
+  ```
+  > You can see that there are no references to the Endorser agent
+
+3.  Set the config file ```author-manual.yml``` in the ```docker-compose-author.yml``` file like this ```--arg-file './configs/author-manual.yml'```
+4.  Start the Author agent ```docker compose -f docker-compose-author.yml up``` 
+5.  Author agent is running
+6.  Accepts the invitation (with auto_accept = true) created by Endorser<br>
+`POST /out-of-band/receive-invitation`<br>
+
+    > You don't have to specify the `alias` for this connection
+
+7.  `POST /transactions/{conn_id}/set-endorser-role`<br>
+    Parameters:<br>
+      - conn_id= connection_id  between Author and Endorser
+      - transaction_my_job = TRANSACTION_AUTHOR 
+
+8.  `POST /transactions/{conn_id}/set-endorser-info`<br>
+    Parameters:<br>
+      - conn_id= connection_id  between Author and Endorser
+      - endorser_did = the_endorser-public-did
+
+> Do not forget to do step 9: ***Setting endorser rôle for the connexion between Endorser and Author***
+
+10. And that's all. For testing we can try publishing the following schema  to the ledger :
+ Call the ```POST /anoncreds/schema``` with this body object:
+
+```json
+{
+  "options": {
+    "create_transaction_for_endorser": true,
+    "endorser_connection_id": "a824b3f7-9f16-414e-b5f8-0e6f3836f701"
+  },
+  "schema": {
+    "attrNames": [
+      "name","last_name"
+    ],
+    "issuerId": "W9o4XdJtB6RKqMyHGvcQn5",
+    "name": "IdentityTest",
+    "version": "1.3"
+  }
+}
+```
+
+> Pay attention to the options section of the payload. The variables/parameters `create_transaction_for_endorser` and  `endorser_connection_id` must be specified

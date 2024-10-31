@@ -1,0 +1,61 @@
+# Ledger
+#no-ledger: true
+genesis-url: put-the-url-genesis-file-here
+
+# Wallet
+auto-provision: true #It must be false in production
+#This agent must have a public DID with NULL rôle
+seed: put-your-seed-here
+#wallet-allow-insecure-seed: true # Uncomment this if no seed is declared
+wallet-type: askar-anoncreds
+wallet-name: AuthorDBName
+wallet-key: change-me-key
+wallet-storage-type: postgres_storage
+#wallet-storage-config: '{"url":"localhost:5433", "wallet_scheme": "DatabasePerWallet"}'
+#wallet-storage-creds: '{"account":"acapy", "password":"acapy", "admin_account":"acapy", "admin_password":"acapy"}'
+
+# Endorsement settings
+auto-request-endorsement: true
+auto-write-transactions: true
+auto-create-revocation-transactions: true
+
+
+
+# Connections
+debug-connections: true
+auto-accept-invites: true
+auto-accept-requests: true
+auto-ping-connection: true
+auto-respond-messages: true
+public-invites: true
+
+# Protocol settings
+monitor-ping: true
+emit-new-didcomm-prefix: true
+emit-new-didcomm-mime-type: true
+preserve-exchange-records: false
+
+# Transport settings
+label: Émetteur
+#image-url:
+inbound-transport:
+  - [http, 0.0.0.0, 3005]
+  
+outbound-transport: http
+endpoint:
+  - http://host.docker.internal:3005
+
+#max-message-size:À déterminer
+enable-undelivered-queue: true
+
+# Admin-Swagger
+admin: [0.0.0.0, 3006]
+#admin-api-key: change-key
+admin-insecure-mode: true
+
+
+# Revocation
+tails-server-base-url: put-your-tails-file-server-here
+
+# Logging settings
+#log-level: info
